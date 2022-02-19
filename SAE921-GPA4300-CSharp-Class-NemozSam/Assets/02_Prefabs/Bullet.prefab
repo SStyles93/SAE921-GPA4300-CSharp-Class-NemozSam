@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4015786820678232135}
   - component: {fileID: 6117641938320520791}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 6704472056765686354}
   - component: {fileID: 8141160340604165585}
   - component: {fileID: 8141160340604165586}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,8 +181,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcaf94c4d6ebd0b46a4d94d67eba2077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
-  _slowedSpeed: 2
+  _speed: 8
+  _slowedSpeed: 1
+  _speedChangeRate: 20
 --- !u!114 &6704472056765686354
 MonoBehaviour:
   m_ObjectHideFlags: 0
