@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] GameObject rotationPoint;
     [SerializeField] float _speed = 2.0f;
     [SerializeField] float _maxSpeed = 5.0f;
 
@@ -33,14 +34,14 @@ public class PlayerMovement : MonoBehaviour
         if (look != Vector2.zero)
         {
             //Find the relative direction we want to look at
-            Vector3 relativeDirection = transform.InverseTransformDirection(new Vector3(look.x, look.y, 0.0f));
+            Vector3 relativeDirection = rotationPoint.transform.InverseTransformDirection(new Vector3(look.x, look.y, 0.0f));
 
             //Calulate the angle of that look direction (and convert it to degrees)
             float angle = Mathf.Atan2(relativeDirection.x, relativeDirection.y) * Mathf.Rad2Deg;
 
             //Smoothly rotate to it at a defined speed
-            transform.Rotate(0, 0, 
-                Mathf.LerpAngle(transform.rotation.z, transform.rotation.z - angle, _turnSpeed * Time.fixedDeltaTime));
+            rotationPoint.transform.Rotate(0, 0, Mathf.LerpAngle(rotationPoint.transform.rotation.z,
+                rotationPoint.transform.rotation.z - angle, _turnSpeed * Time.fixedDeltaTime));
         }
     }
 }
