@@ -14,9 +14,13 @@ public class SetSortingOrder : MonoBehaviour
     void Start()
     {
         _sp = GetComponent<SpriteRenderer>();
-        _sp.sortingOrder = _baseOrder;
+        _baseOrder = _sp.sortingOrder;
     }
 
+    /// <summary>
+    /// Called via message by SetOrderByHeight, add the base sorting order to the new one before applying it
+    /// </summary>
+    /// <param name="order">The order that corresponds to the height in the scene</param>
     void OnOrderByHeightChanged(int order)
     {
         _sp.sortingOrder = _baseOrder + order;

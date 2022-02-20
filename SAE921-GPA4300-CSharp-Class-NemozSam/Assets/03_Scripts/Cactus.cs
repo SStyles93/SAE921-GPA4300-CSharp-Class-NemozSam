@@ -19,9 +19,11 @@ public class Cactus : MonoBehaviour
 
     public void OnTakeDamage()
     {
+        StopAllCoroutines();
+
+
         if (--_health == 0)
         {
-            StopAllCoroutines();
             Die();
         }
         else
