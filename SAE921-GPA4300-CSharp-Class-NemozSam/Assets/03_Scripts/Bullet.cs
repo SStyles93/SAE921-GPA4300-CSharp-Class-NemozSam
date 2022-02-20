@@ -40,6 +40,11 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        collision.transform.GetComponent<PlayerHealth>()?.TakeDamage();
+        collision.transform.GetComponent<Damageable>()?.TakeDamage();
+    }
+
+    public void OnOrderByHeightChanged(int order)
+    {
+        GetComponentInChildren<SpriteRenderer>().sortingOrder = order;
     }
 }
