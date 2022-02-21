@@ -5,26 +5,35 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    int _lives;
+    [SerializeField] GameObject _lifeObject;
+    float _width;
 
     Color _playerColor;
-    [SerializeField] List<Image> _colorableElements;
-    [SerializeField] List<GameObject> _livesObjects;
-
+    List<GameObject> _livesObjects = new List<GameObject>();
 
     public void AssignLives(int lives)
     {
-        //TODO Set the amount of image to the amount of lives
-        _lives = lives;
+        _width = _lifeObject.GetComponent<RectTransform>().rect.width;
+        for (int life = 0; life < lives; life++)
+        {
+            //Create the life icon
+            _livesObjects.Add(Instantiate(_lifeObject, _lifeObject.GetComponent<RectTransform>().position + 
+                new Vector3(life * _width, 0,0), _lifeObject.transform.rotation, transform));
+
+            //enable it
+            _livesObjects[_livesObjects.Count - 1].SetActive(true);
+        }
     }
 
     public void AssignColor(Color color)
     {
         _playerColor = color;
 
-        foreach (var colorable in _colorableElements)
+        _lifeObject.GetComponent<Image>().color = _playerColor;
+
+        foreach (var colorable in _livesObjects)
         {
-            colorable.color = _playerColor;
+            colorable.GetComponent<Image>().color = _playerColor;
         }
     }
 

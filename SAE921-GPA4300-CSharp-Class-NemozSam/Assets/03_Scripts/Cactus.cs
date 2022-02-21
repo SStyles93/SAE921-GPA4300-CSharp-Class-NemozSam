@@ -5,6 +5,7 @@ using UnityEngine;
 public class Cactus : MonoBehaviour
 {
     [SerializeField] int _health = 3;
+    int _curHealth = 3;
     Sprite _baseSprite;
     [SerializeField] Sprite _dmgSprite;
     [SerializeField] Sprite _deadSprite;
@@ -13,6 +14,7 @@ public class Cactus : MonoBehaviour
 
     private void Start()
     {
+        _curHealth = _health;
         _sp = GetComponent<SpriteRenderer>();
         _baseSprite = _sp.sprite;
     }
@@ -22,7 +24,7 @@ public class Cactus : MonoBehaviour
         StopAllCoroutines();
 
 
-        if (--_health == 0)
+        if (--_curHealth == 0)
         {
             Die();
         }
@@ -43,5 +45,12 @@ public class Cactus : MonoBehaviour
         _sp.sprite = _dmgSprite;
         yield return new WaitForSeconds(0.3f);
         _sp.sprite = _baseSprite;
+    }
+
+    void OnReset()
+    {
+        _sp.sprite = _baseSprite;
+        _curHealth = _health;
+        GetComponent<Collider2D>().enabled = true;
     }
 }

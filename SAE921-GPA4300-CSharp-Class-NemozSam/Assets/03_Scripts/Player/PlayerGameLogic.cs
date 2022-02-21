@@ -23,7 +23,7 @@ public class PlayerGameLogic : MonoBehaviour
     public void LinkUI(PlayerUI playerUI)
     {
         _lifeUI = playerUI;
-
+        _lifeUI.AssignLives(_startLives);
     }
 
     public void AssignColor(Color color)
@@ -40,6 +40,8 @@ public class PlayerGameLogic : MonoBehaviour
 
     public void OnTakeDamage()
     {
+        GetComponent<EffectsSpawner>().SpawnEffect("Blood", false);
+
         _lifeUI.LoseLife();
 
         _managerInterface.ReportDamage(this);
@@ -47,6 +49,8 @@ public class PlayerGameLogic : MonoBehaviour
 
     public void Die()
     {
-        //TODO
+        //TODO everything
+
+        GetComponent<EffectsSpawner>().SpawnEffect("Tomb", false);
     }
 }

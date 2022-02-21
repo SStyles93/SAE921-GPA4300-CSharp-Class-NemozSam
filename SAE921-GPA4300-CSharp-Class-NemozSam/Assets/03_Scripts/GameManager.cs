@@ -88,5 +88,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(bullet.gameObject);
         }
+
+        //Reset all other things
+        foreach (var resetable in FindObjectsOfType<Resetable>())
+        {
+            resetable.ResetToDefault();
+        }
     }
 }
