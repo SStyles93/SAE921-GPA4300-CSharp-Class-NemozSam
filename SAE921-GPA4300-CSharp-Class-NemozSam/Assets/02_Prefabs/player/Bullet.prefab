@@ -133,6 +133,7 @@ MonoBehaviour:
   _speed: 7
   _slowedSpeed: 0.8
   _speedChangeRate: 20
+  _transparentColor: {r: 1, g: 1, b: 1, a: 0.23529412}
 --- !u!114 &6704472056765686354
 MonoBehaviour:
   m_ObjectHideFlags: 0

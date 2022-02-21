@@ -14,6 +14,11 @@ public class Bullet : MonoBehaviour
     Rigidbody2D _rb;
     Slowable _slowable;
 
+    SpriteRenderer _sp;
+    bool _canDamage = false;
+    Color _baseColor;
+    [SerializeField] Color _transparentColor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +31,11 @@ public class Bullet : MonoBehaviour
         _slowable = GetComponent<Slowable>();
         _slowable.AddSlowAction(() => _goalSpeed = _slowedSpeed);
         _slowable.AddUnSlowAction(() => _goalSpeed = _speed);
+
+        //Make the bullet transparent and unable to deal damage at first
+        _sp = GetComponentInChildren<SpriteRenderer>();
+        _baseColor = _sp.color;
+        _sp.color = _transparentColor;
     }
 
     private void FixedUpdate()
@@ -40,7 +50,20 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        collision.transform.GetComponent<Damageable>()?.TakeDamage();
+        if (_canDamage)
+        {
+            collision.transform.GetComponent<Damageable>()?.TakeDamage();
+        }
+        else
+        {
+            BecomeTangible();
+        }
+    }
+
+    void BecomeTangible()
+    {
+        _canDamage = true;
+        _sp.color = _baseColor;
     }
 
     public void OnOrderByHeightChanged(int order)

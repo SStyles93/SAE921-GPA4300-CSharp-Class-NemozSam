@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 958859031985127767}
   - component: {fileID: -2097039955050503204}
   - component: {fileID: -8892942296189931317}
-  - component: {fileID: 1521912182238835168}
+  - component: {fileID: 8544224151942288903}
   - component: {fileID: 3719003373040977498}
   m_Layer: 0
   m_Name: Player
@@ -254,7 +254,7 @@ MonoBehaviour:
   _shootPoint: {fileID: 3230119137396800940}
   _bullet: {fileID: 8141160340604165588, guid: 9e31fb72b6e43de429668cd624a4a4c1, type: 3}
   _slowDownEffect: {fileID: 6939030489030586438, guid: 98390b65613a06442a5cabd1bd55e430, type: 3}
---- !u!114 &1521912182238835168
+--- !u!114 &8544224151942288903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 958859031985127771}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67e546ffac8a44647beb1d0cb5e84999, type: 3}
+  m_Script: {fileID: 11500000, guid: d8c106700bd24ea448ae48271a93b06f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3719003373040977498
