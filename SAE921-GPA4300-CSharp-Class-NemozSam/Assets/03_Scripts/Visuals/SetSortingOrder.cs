@@ -11,7 +11,7 @@ public class SetSortingOrder : MonoBehaviour
     SpriteRenderer _sp;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _sp = GetComponent<SpriteRenderer>();
         _baseOrder = _sp.sortingOrder;

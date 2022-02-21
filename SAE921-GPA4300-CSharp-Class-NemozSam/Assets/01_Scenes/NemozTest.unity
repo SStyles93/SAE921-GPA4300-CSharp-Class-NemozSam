@@ -1393,9 +1393,9 @@ MonoBehaviour:
   - {fileID: 1298466306}
   - {fileID: 1298466305}
   - {fileID: 1298466304}
-  _playerCount: 0
   _players: []
   _playersUi: []
+  _playerInterface: {fileID: 11400000, guid: a8b8bee14ad7b3b4a9bc26975593808d, type: 2}
 --- !u!114 &1047420781
 MonoBehaviour:
   m_ObjectHideFlags: 0

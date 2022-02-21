@@ -20,11 +20,16 @@ public class GameManager : MonoBehaviour
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
     [SerializeField] private List<GameObject> _playersUi;
+    [Tooltip("Give the same to the players, the manager will know from this when a player is hit")]
+    [SerializeField] private PlayerManagerInterface _playerInterface;
 
     private void Awake()
     {
+        //Link to the playerInputManager
         _playerInputManager = GetComponent<PlayerInputManager>();
         _playerInputManager.onPlayerJoined += OnPlayerJoined;
+
+        _playerInterface.AddDamageReportAction(OnPlayerTakeDamage);
     }
 
     /// <summary>
@@ -39,19 +44,49 @@ public class GameManager : MonoBehaviour
         _players.Add(playerInput.gameObject);
 
         //Set the player to his spawn point
-        playerInput.transform.position = _spawnPositions[_players.Count].position;
-        playerInput.transform.rotation = _spawnPositions[_players.Count].rotation;
-        
+        playerInput.transform.position = _spawnPositions[_players.Count -1].position;
+        playerInput.transform.rotation = _spawnPositions[_players.Count -1].rotation;
+
         //Create the ui
-        _playersUi.Add(Instantiate(_UIPrefab,
-            _UIPositions[_players.Count].transform.position,
-            _UIPositions[_players.Count].transform.rotation,
-            _UIPositions[_players.Count].transform));
+        //_playersUi.Add(Instantiate(_UIPrefab,
+        //    _UIPositions[_players.Count -1].transform.position,
+        //    _UIPositions[_players.Count -1].transform.rotation,
+        //    _UIPositions[_players.Count -1].transform));
+
+        _players[_players.Count - 1].GetComponent<PlayerGameLogic>().LinkUI(Instantiate(_UIPrefab,
+            _UIPositions[_players.Count -1].transform.position,
+            _UIPositions[_players.Count -1].transform.rotation,
+            _UIPositions[_players.Count-1].transform).GetComponent<PlayerUI>());
+
+        //Assign a color to the player
+        _players[_players.Count - 1].GetComponent<PlayerGameLogic>().AssignColor(Random.ColorHSV());
 
         //Disables player joining after 4 players join
         if (_players.Count >= 4)
         {
             _playerInputManager.DisableJoining();
+        }
+    }
+
+    void OnPlayerTakeDamage(PlayerGameLogic player)
+    {
+        //TODO, check for gameOvers
+        SetupNewRound();
+    }
+
+    void SetupNewRound()
+    {
+        //Reset each player's spawn
+        for(int i = 0 ; i < _players.Count ; i++)
+        {
+            _players[i].transform.position = _spawnPositions[i].position;
+            _players[i].transform.rotation = _spawnPositions[i].rotation;
+        }
+
+        //Delete all bullets
+        foreach (var bullet in FindObjectsOfType<Bullet>())
+        {
+            Destroy(bullet.gameObject);
         }
     }
 }
