@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 9162773979395317679}
   - component: {fileID: 9162773979395317672}
   - component: {fileID: 1889456753281164566}
-  - component: {fileID: -3662066534186041648}
   - component: {fileID: 7274981925006576154}
   m_Layer: 0
   m_Name: Cactus
@@ -126,18 +125,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4b665bb1018a9c4faf23894eac6aff2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-3662066534186041648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9162773979395317676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6cdb137a5042814084090ca8b213747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &7274981925006576154

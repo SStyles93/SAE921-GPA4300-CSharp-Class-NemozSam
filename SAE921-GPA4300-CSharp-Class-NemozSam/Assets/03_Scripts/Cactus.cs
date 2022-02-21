@@ -47,10 +47,18 @@ public class Cactus : MonoBehaviour
         _sp.sprite = _baseSprite;
     }
 
-    void OnReset()
+    /// <summary>
+    /// Reset the cactus and return true if it was destroyed and regrown
+    /// </summary>
+    /// <returns>true if cactus had to be regrown, false otherwise</returns>
+    public bool Regrow()
     {
+        bool regrow = _curHealth <= 0 ? true : false;
+
         _sp.sprite = _baseSprite;
         _curHealth = _health;
         GetComponent<Collider2D>().enabled = true;
+
+        return regrow;
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6939030489030586436}
   - component: {fileID: 6939030489030586437}
   - component: {fileID: 1624813165693631051}
+  - component: {fileID: 2727858940117443864}
   m_Layer: 0
   m_Name: SlowDownEffect
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8a52c209c088da04cacaa27bd8195c66, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.21176471}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.32156864}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -91,7 +92,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6939030489030586438}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -99,7 +100,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.33
+  m_Radius: 0.35297418
 --- !u!114 &1624813165693631051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,3 +115,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseRadius: 7
   _growSpeed: 7
+--- !u!70 &2727858940117443864
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6939030489030586438}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.007905364, y: 0.00031614304}
+  m_Size: {x: 0.649974, y: 0.7067448}
+  m_Direction: 0

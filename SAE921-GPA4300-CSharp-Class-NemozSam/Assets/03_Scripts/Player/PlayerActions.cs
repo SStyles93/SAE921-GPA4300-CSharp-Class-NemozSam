@@ -118,4 +118,18 @@ public class PlayerActions : MonoBehaviour
 
         _loaded = true;
     }
+
+    public void ResetActions()
+    {
+        //Stop all current processes
+        StopAllCoroutines();
+
+        //Destroy our special effects
+        if (_slowDownInstance)
+            Destroy(_slowDownInstance);
+
+        //Reset our variables
+        _loaded = true;
+        _charge = _powerMaxCharge;
+    }
 }

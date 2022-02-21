@@ -56,4 +56,14 @@ public class PlayerGameLogic : MonoBehaviour
 
         GetComponent<EffectsSpawner>().SpawnEffect("Tomb", false);
     }
+
+    public void Spawn(Transform spawnPoint)
+    {
+        transform.position = spawnPoint.position;
+        transform.rotation = spawnPoint.rotation;
+
+        //TODO add particles that show the player just spawned in and/or sound cues
+
+        GetComponent<PlayerActions>().ResetActions();
+    }
 }

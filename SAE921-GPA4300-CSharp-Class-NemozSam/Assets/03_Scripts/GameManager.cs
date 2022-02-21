@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
     [SerializeField] private List<GameObject> _playersUi;
-    [Tooltip("Give the same to the players, the manager will know from this when a player is hit")]
+    [Tooltip("Give the same to the players. The manager will know from this when a player is hit")]
     [SerializeField] private PlayerManagerInterface _playerInterface;
 
     private void Awake()
@@ -44,15 +44,13 @@ public class GameManager : MonoBehaviour
         _players.Add(playerInput.gameObject);
 
         //Set the player to his spawn point
-        playerInput.transform.position = _spawnPositions[_players.Count -1].position;
-        playerInput.transform.rotation = _spawnPositions[_players.Count -1].rotation;
+        playerInput.GetComponent<PlayerGameLogic>().Spawn(_spawnPositions[_players.Count - 1]);
 
         //Create the ui
         //_playersUi.Add(Instantiate(_UIPrefab,
         //    _UIPositions[_players.Count -1].transform.position,
         //    _UIPositions[_players.Count -1].transform.rotation,
         //    _UIPositions[_players.Count -1].transform));
-
         _players[_players.Count - 1].GetComponent<PlayerGameLogic>().LinkUI(Instantiate(_UIPrefab,
             _UIPositions[_players.Count -1].transform.position,
             _UIPositions[_players.Count -1].transform.rotation,
@@ -71,28 +69,6 @@ public class GameManager : MonoBehaviour
     void OnPlayerTakeDamage(PlayerGameLogic player)
     {
         //TODO, check for gameOvers
-        SetupNewRound();
-    }
-
-    void SetupNewRound()
-    {
-        //Reset each player's spawn
-        for(int i = 0 ; i < _players.Count ; i++)
-        {
-            _players[i].transform.position = _spawnPositions[i].position;
-            _players[i].transform.rotation = _spawnPositions[i].rotation;
-        }
-
-        //Delete all bullets
-        foreach (var bullet in FindObjectsOfType<Bullet>())
-        {
-            Destroy(bullet.gameObject);
-        }
-
-        //Reset all other things
-        foreach (var resetable in FindObjectsOfType<Resetable>())
-        {
-            resetable.ResetToDefault();
-        }
+        GetComponent<RoundManager>()?.NewRound(_spawnPositions, _players);
     }
 }

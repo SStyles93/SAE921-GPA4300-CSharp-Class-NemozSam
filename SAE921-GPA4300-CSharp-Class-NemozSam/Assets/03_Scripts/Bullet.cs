@@ -15,9 +15,13 @@ public class Bullet : MonoBehaviour
     Slowable _slowable;
 
     SpriteRenderer _sp;
-    bool _canDamage = false;
+
+    [SerializeField] bool startIntangible = false;
+    bool _canDamage = true;
     Color _baseColor;
     [SerializeField] Color _transparentColor;
+
+    [SerializeField] GameObject _destroyEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -32,10 +36,14 @@ public class Bullet : MonoBehaviour
         _slowable.AddSlowAction(() => _goalSpeed = _slowedSpeed);
         _slowable.AddUnSlowAction(() => _goalSpeed = _speed);
 
-        //Make the bullet transparent and unable to deal damage at first
-        _sp = GetComponentInChildren<SpriteRenderer>();
-        _baseColor = _sp.color;
-        _sp.color = _transparentColor;
+        if (startIntangible)
+        {
+            //Make the bullet transparent and unable to deal damage at first
+            _sp = GetComponentInChildren<SpriteRenderer>();
+            _baseColor = _sp.color;
+            _sp.color = _transparentColor;
+            _canDamage = false;
+        }
     }
 
     private void FixedUpdate()
@@ -70,5 +78,11 @@ public class Bullet : MonoBehaviour
     {
         GetComponentInChildren<SpriteRenderer>().sortingOrder = order;
         GetComponentInChildren<TrailRenderer>().sortingOrder = order;
+    }
+
+    public void DestroyBullet()
+    {
+        Destroy(gameObject);
+        Instantiate(_destroyEffect, transform.position, transform.rotation);
     }
 }
