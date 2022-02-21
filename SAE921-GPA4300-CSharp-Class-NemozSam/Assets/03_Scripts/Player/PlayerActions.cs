@@ -20,12 +20,14 @@ public class PlayerActions : MonoBehaviour
     GameObject _slowDownInstance = null;
 
     PlayerInput _input;
+    PlayerGameLogic _gameLogic;
 
     private void Start()
     {
         _charge = _powerMaxCharge;
 
         _input = GetComponent<PlayerInput>();
+        _gameLogic = GetComponent<PlayerGameLogic>();
 
         _input.actions["Fire"].performed += TryShoot;
 
@@ -84,6 +86,11 @@ public class PlayerActions : MonoBehaviour
     void Special()
     {
         _slowDownInstance = Instantiate(_slowDownEffect, transform);
+        Color slowDownColor = _slowDownInstance.GetComponent<SpriteRenderer>().color;
+        slowDownColor.r = _gameLogic.PlayerColor.r;
+        slowDownColor.g = _gameLogic.PlayerColor.g;
+        slowDownColor.b = _gameLogic.PlayerColor.b;
+        _slowDownInstance.GetComponent<SpriteRenderer>().color = slowDownColor;
         StartCoroutine(UpdateSpecialInstance());
     }
 
