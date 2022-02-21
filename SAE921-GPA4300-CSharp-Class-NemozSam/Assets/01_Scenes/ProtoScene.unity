@@ -905,9 +905,9 @@ MonoBehaviour:
   - {fileID: 1635934689}
   - {fileID: 70290515}
   - {fileID: 887189368}
-  _playerCount: 0
   _players: []
   _playersUi: []
+  _playerInterface: {fileID: 11400000, guid: a8b8bee14ad7b3b4a9bc26975593808d, type: 2}
 --- !u!1 &1282468255
 GameObject:
   m_ObjectHideFlags: 0

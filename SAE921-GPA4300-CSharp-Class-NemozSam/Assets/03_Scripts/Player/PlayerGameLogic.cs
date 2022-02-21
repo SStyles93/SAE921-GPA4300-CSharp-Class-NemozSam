@@ -9,11 +9,14 @@ public class PlayerGameLogic : MonoBehaviour
     int _lives;
     public int Lives { get { return _lives; } }
 
+
     Color _playerColor;
     [SerializeField] List<SpriteRenderer> _colorableElements;
     [SerializeField] PlayerManagerInterface _managerInterface;
 
     PlayerUI _lifeUI;
+
+    public Color PlayerColor { get => _playerColor; set => _playerColor = value; }
 
     private void Start()
     {
