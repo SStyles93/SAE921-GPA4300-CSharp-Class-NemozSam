@@ -15,11 +15,15 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D _rb;
     PlayerInput _input;
 
+    PlayerVisuals _visuals;
+
     // Start is called before the first frame update
     void Start()
     {
         _input = GetComponent<PlayerInput>();
         _rb = GetComponent<Rigidbody2D>();
+
+        _visuals = GetComponentInChildren<PlayerVisuals>();
     }
 
     // Update is called once per frame
@@ -28,6 +32,9 @@ public class PlayerMovement : MonoBehaviour
         //Movement
         Vector2 movement = _input.actions["Movement"].ReadValue<Vector2>();
         _rb.velocity = Vector2.Lerp(_rb.velocity, movement * _maxSpeed, _speed * Time.fixedDeltaTime);
+
+        //Update the visuals
+        _visuals.UpdateVisuals(movement);
 
         //Look direction
         Vector2 look = _input.actions["Look"].ReadValue<Vector2>();
