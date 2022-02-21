@@ -69,5 +69,6 @@ public class Bullet : MonoBehaviour
     public void OnOrderByHeightChanged(int order)
     {
         GetComponentInChildren<SpriteRenderer>().sortingOrder = order;
+        GetComponentInChildren<TrailRenderer>().sortingOrder = order;
     }
 }
