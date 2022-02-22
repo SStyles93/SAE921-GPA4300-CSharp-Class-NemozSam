@@ -82,11 +82,7 @@ public class GameManager : MonoBehaviour
                 //adds ready players to a list (to compare with instantiated player)
                 _readyPlayers.Add(player);
                 //Instantiate & activate ReadyText
-                PlayerUI playerUI =
-                _UIPositions[_readyPlayers.IndexOf(player)].
-                    GetComponentInChildren<PlayerUI>();
-                playerUI.InstantiateReadyText();
-                playerUI.EnableOrDisableReadyText(true);
+                SetReadyText(player, true);
             }
         }
         if (_readyPlayers.Count == _players.Count)
@@ -98,12 +94,23 @@ public class GameManager : MonoBehaviour
                 //Unblock player
                 player.GetComponent<PlayerGameLogic>().BlockPlayer(false);
                 //Disable ReadyText
-                PlayerUI playerUI =
-               _UIPositions[_readyPlayers.IndexOf(player)].
-                   GetComponentInChildren<PlayerUI>();
-                playerUI.EnableOrDisableReadyText(false);
+                SetReadyText(player, false);
             }
         }
+    }
+
+    /// <summary>
+    /// Enables or Disables ReadyText for the player
+    /// </summary>
+    /// <param name="player">The player with whom we want to interact</param>
+    /// <param name="state">The state in witch we want to set the ReadyText</param>
+    private void SetReadyText(GameObject player, bool state)
+    {
+        PlayerUI playerUI =
+                _UIPositions[_readyPlayers.IndexOf(player)].
+                    GetComponentInChildren<PlayerUI>();
+        playerUI.InstantiateReadyText();
+        playerUI.EnableOrDisableReadyText(state);
     }
 
     /// <summary>
