@@ -80,6 +80,32 @@ public class PlayerGameLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Enable the player without alowing him to interact
+    /// </summary>
+    /// <param name="enable">wether to block the player or not. Set to true the player will be blocked</param>
+    public void BlockPlayer(bool enable)
+    {
+        //Access PlayerActions
+        GetComponent<PlayerActions>().CanShoot = !enable;
+        GetComponent<PlayerActions>().CanSpecial = !enable;
+        //Access PlayerMovement
+        GetComponent<PlayerMovement>().CanMove = !enable;
+        //Access Player's physics
+        GetComponent<Collider2D>().enabled = enable;
+        GetComponent<Rigidbody2D>().simulated = enable;
+        //Disable the player's visuals
+        foreach (var sp in GetComponentsInChildren<SpriteRenderer>())
+        {
+            sp.enabled = enable;
+        }
+        //Disable Player's animator
+        GetComponentInChildren<PlayerVisuals>().GetComponentInChildren<Animator>().enabled = !enable;
+    }
+
+    /// <summary>
+    /// GhostMode is a mode where the player can only shoot.
+    /// </summary>
     void GhostMode()
     {
         GetComponent<PlayerActions>().CanShoot = true;
@@ -91,6 +117,10 @@ public class PlayerGameLogic : MonoBehaviour
         GetComponentInChildren<PlayerVisuals>().BecomeGhost();
     }
 
+    /// <summary>
+    /// Spawns the player at the defined spawnPoint
+    /// </summary>
+    /// <param name="spawnPoint">Transform used to spawn the player</param>
     public void Spawn(Transform spawnPoint)
     {
         transform.position = spawnPoint.position;

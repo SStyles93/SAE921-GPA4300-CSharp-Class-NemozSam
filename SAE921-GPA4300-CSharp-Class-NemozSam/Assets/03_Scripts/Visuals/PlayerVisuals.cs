@@ -15,6 +15,10 @@ public class PlayerVisuals : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
     }
 
+    /// <summary>
+    /// Sets the players animator speed to the given movement speed
+    /// </summary>
+    /// <param name="movement">movement vector used to set speed of animatior</param>
     public void UpdateVisuals(Vector2 movement)
     {
         if (movement == Vector2.zero)
@@ -28,6 +32,9 @@ public class PlayerVisuals : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method used to give the player a "Ghost" visual
+    /// </summary>
     public void BecomeGhost()
     {
         _body.SetActive(false);

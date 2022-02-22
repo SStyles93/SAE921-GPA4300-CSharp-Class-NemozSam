@@ -31,6 +31,19 @@ public class GameManager : MonoBehaviour
 
         _playerInterface.AddDamageReportAction(OnPlayerTakeDamage);
     }
+    public void Update()
+    {
+        //Blockes the players until there are enough to play
+        //TODO: Control for a validation from the instantiated players before the game starts
+        while(_players.Count < 2)
+        {
+            foreach(var player in _players)
+            {
+                player.GetComponent<PlayerGameLogic>().BlockPlayer(true);
+            }
+            break;
+        }
+    }
 
     /// <summary>
     /// Instanciates the player and places him at player's spawning point according to his index(_playerCount)
