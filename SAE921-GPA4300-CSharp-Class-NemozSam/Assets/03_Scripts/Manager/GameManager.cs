@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,7 +18,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("The players UI Positions on the screen")]
     [SerializeField] private List<GameObject> _UIPositions;
     [Tooltip("The UICanvas's startTimer")]
-    [SerializeField] private GameObject startTimer;
+    [SerializeField] private GameObject _startTimer;
+    [Tooltip("Time before starting the game once all players are ready")]
+    [SerializeField] private float _startTime = 4.0f;
+    [SerializeField] private bool gameIsReady = false;
 
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
@@ -92,15 +96,17 @@ public class GameManager : MonoBehaviour
                 SetReadyText(player, true);
             }
         }
-        if (_readyPlayers.Count == _players.Count && _readyPlayers.Count >= nbPlayersToPlay)
+        if (_readyPlayers.Count == _players.Count && _readyPlayers.Count >= nbPlayersToPlay && !gameIsReady)
+        {
+            gameIsReady = true;
+            StartCoroutine(StartCountdown(_startTime));
+        }
+        if (gameIsReady)
         {
             foreach (var player in _players)
             {
                 //Disable ReadyText
                 SetReadyText(player, false);
-
-                //TODO: Set a timer and show in "_startTimer"(UI) before activating the following methods
-                StartCoroutine(StartCountdown(3.0f));
 
                 //Unblock player
                 player.GetComponent<PlayerGameLogic>().BlockPlayer(false);
@@ -121,7 +127,7 @@ public class GameManager : MonoBehaviour
                 _UIPositions[_readyPlayers.IndexOf(player)].
                     GetComponentInChildren<PlayerUI>();
         if(state == true)
-        playerUI.InstantiateReadyText();
+            playerUI.InstantiateReadyText();
         playerUI.EnableOrDisableReadyText(state);
     }
 
@@ -132,7 +138,16 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator StartCountdown(float time)
     {
-        yield return new WaitForSeconds(time);
+        _startTimer.gameObject.SetActive(true);
+        while (time > 1.0f)
+        {
+            time -= Time.unscaledDeltaTime;
+            _startTimer.GetComponent<Text>().text = ((int)time).ToString();
+            yield return null;        
+        }
+        _startTimer.GetComponent<Text>().text = "Start !";
+        yield return new WaitForSecondsRealtime(1.0f);
+        _startTimer.gameObject.SetActive(false);
     }
 
     /// <summary>
