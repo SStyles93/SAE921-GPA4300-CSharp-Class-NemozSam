@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
-    [SerializeField] private List<GameObject> _playersUi;
+    [SerializeField] private List<GameObject> _potentialWinners = new List<GameObject>();
     [Tooltip("Give the same to the players. The manager will know from this when a player is hit")]
     [SerializeField] private PlayerManagerInterface _playerInterface;
 
@@ -42,15 +42,12 @@ public class GameManager : MonoBehaviour
 
         //Add player into our list of players
         _players.Add(playerInput.gameObject);
+        _potentialWinners.Add(playerInput.gameObject);
 
         //Set the player to his spawn point
         playerInput.GetComponent<PlayerGameLogic>().Spawn(_spawnPositions[_players.Count - 1]);
 
         //Create the ui
-        //_playersUi.Add(Instantiate(_UIPrefab,
-        //    _UIPositions[_players.Count -1].transform.position,
-        //    _UIPositions[_players.Count -1].transform.rotation,
-        //    _UIPositions[_players.Count -1].transform));
         _players[_players.Count - 1].GetComponent<PlayerGameLogic>().LinkUI(Instantiate(_UIPrefab,
             _UIPositions[_players.Count -1].transform.position,
             _UIPositions[_players.Count -1].transform.rotation,
@@ -69,6 +66,26 @@ public class GameManager : MonoBehaviour
     void OnPlayerTakeDamage(PlayerGameLogic player)
     {
         //TODO, check for gameOvers
-        GetComponent<RoundManager>()?.NewRound(_spawnPositions, _players);
+
+        if (_potentialWinners.Count > 1)
+            _potentialWinners.Remove(player.gameObject);
+
+        //Win
+        if (_potentialWinners.Count == 1)
+        {
+            GetComponent<RoundManager>()?.NewRound(_spawnPositions, _players, _potentialWinners[0]);
+
+            //Reset the potential winners
+            _potentialWinners = new List<GameObject>(_players);
+
+            //Clear out the dead ones
+            for (int pIndex = 0; pIndex < _potentialWinners.Count; pIndex++)
+            {
+                if(_potentialWinners[pIndex].GetComponent<PlayerGameLogic>().Lives == 0)
+                {
+                    _potentialWinners.RemoveAt(pIndex);
+                }
+            }
+        }
     }
 }

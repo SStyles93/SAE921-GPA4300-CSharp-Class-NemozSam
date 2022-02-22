@@ -17,6 +17,9 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerVisuals _visuals;
 
+    bool _canMove = true;
+    public bool CanMove { get => _canMove; set => _canMove = value; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,11 +33,14 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         //Movement
-        Vector2 movement = _input.actions["Movement"].ReadValue<Vector2>();
-        _rb.velocity = Vector2.Lerp(_rb.velocity, movement * _maxSpeed, _speed * Time.fixedDeltaTime);
+        if (_canMove)
+        {
+            Vector2 movement = _input.actions["Movement"].ReadValue<Vector2>();
+            _rb.velocity = Vector2.Lerp(_rb.velocity, movement * _maxSpeed, _speed * Time.fixedDeltaTime);
 
-        //Update the visuals
-        _visuals.UpdateVisuals(movement);
+            //Update the visuals
+            _visuals.UpdateVisuals(movement);
+        }
 
         //Look direction
         Vector2 look = _input.actions["Look"].ReadValue<Vector2>();

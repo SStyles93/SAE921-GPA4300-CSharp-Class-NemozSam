@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class RoundManager : MonoBehaviour
 {
-    public void NewRound(List<Transform> spawnPositions, List<GameObject> players)
+    public void NewRound(List<Transform> spawnPositions, List<GameObject> players, GameObject winner)
     {
-        StartCoroutine(ResetRound(spawnPositions, players));
+        StartCoroutine(ResetRound(spawnPositions, players, winner));
     }
 
-    IEnumerator ResetRound(List<Transform> spawnPositions, List<GameObject> players)
+    IEnumerator ResetRound(List<Transform> spawnPositions, List<GameObject> players, GameObject winner)
     {
         Time.timeScale = 0.0f;
         yield return ClearLastRound();
 
         if (Camera.main.GetComponent<CameraEffects>())
-            yield return Camera.main.GetComponent<CameraEffects>().ZoomOnTarget(players[0].transform.position);
+            yield return Camera.main.GetComponent<CameraEffects>().ZoomOnTarget(winner.transform.position);
 
         yield return Celebration();
 

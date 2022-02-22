@@ -22,6 +22,11 @@ public class PlayerActions : MonoBehaviour
     PlayerInput _input;
     PlayerGameLogic _gameLogic;
 
+    bool _canShoot = true;
+    bool _canSpecial = true;
+    public bool CanShoot { get => _canShoot; set => _canShoot = value; }
+    public bool CanSpecial { get => _canSpecial; set => _canSpecial = value; }
+
     private void Start()
     {
         _charge = _powerMaxCharge;
@@ -57,7 +62,7 @@ public class PlayerActions : MonoBehaviour
 
     void TryShoot(InputAction.CallbackContext context)
     {
-        if (_loaded)
+        if (_loaded && _canShoot)
             Shoot();
     }
 
@@ -73,7 +78,7 @@ public class PlayerActions : MonoBehaviour
 
     void TrySpecial(InputAction.CallbackContext context)
     {
-        if (!_slowDownInstance)
+        if (!_slowDownInstance && _canSpecial)
             Special();
     }
 
