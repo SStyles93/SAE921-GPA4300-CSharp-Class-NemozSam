@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     [Tooltip("Give the same to the players. The manager will know from this when a player is hit")]
     [SerializeField] private PlayerManagerInterface _playerInterface;
 
+    bool _gameStarted;
+
     private void Awake()
     {
         //Link to the playerInputManager
@@ -38,7 +40,8 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        CheckIfReadyToStart();
+        if (!_gameStarted)
+            CheckIfReadyToStart();
     }
 
     /// <summary>
@@ -102,6 +105,8 @@ public class GameManager : MonoBehaviour
                 //Unblock player
                 player.GetComponent<PlayerGameLogic>().BlockPlayer(false);
             }
+
+            _gameStarted = true;
         }
     }
 
@@ -152,7 +157,7 @@ public class GameManager : MonoBehaviour
             //Clear out the dead ones
             for (int pIndex = 0; pIndex < _potentialWinners.Count; pIndex++)
             {
-                if(_potentialWinners[pIndex].GetComponent<PlayerGameLogic>().Lives == 0)
+                if(_potentialWinners[pIndex].GetComponent<PlayerGameLogic>().Lives <= 0)
                 {
                     _potentialWinners.RemoveAt(pIndex);
                 }

@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lives: 5
+  _isReady: 0
   _colorableElements:
   - {fileID: 514102821693316465}
   _managerInterface: {fileID: 11400000, guid: a8b8bee14ad7b3b4a9bc26975593808d, type: 2}
@@ -312,6 +313,7 @@ MonoBehaviour:
   _spawnableEffects:
   - {fileID: 3343749810023065824, guid: 1808ed139f9adc24f8672a7cb53a0692, type: 3}
   - {fileID: 5685474907351227004, guid: d3f86d02d3c240747b38661976f1cae7, type: 3}
+  - {fileID: 1627398152832261016, guid: f47a7c7f19745f241993bf740a0e95c9, type: 3}
 --- !u!1 &2433837779618835688
 GameObject:
   m_ObjectHideFlags: 0

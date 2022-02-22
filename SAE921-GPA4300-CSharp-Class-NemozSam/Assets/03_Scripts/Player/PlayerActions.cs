@@ -131,6 +131,9 @@ public class PlayerActions : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
 
+        //Play reload sound
+        GetComponent<EffectsSpawner>().SpawnEffect("ReloadFlash", _shootPoint.transform);
+
         _loaded = true;
     }
 

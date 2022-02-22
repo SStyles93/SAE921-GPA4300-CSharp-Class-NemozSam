@@ -120,7 +120,7 @@ public class PlayerGameLogic : MonoBehaviour
         transform.position = spawnPoint.position;
         transform.rotation = spawnPoint.rotation;
 
-        if (_lives == 0)
+        if (_lives <= 0)
         {
             GhostMode();
         }

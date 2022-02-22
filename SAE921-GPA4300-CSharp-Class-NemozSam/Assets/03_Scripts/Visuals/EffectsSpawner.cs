@@ -21,27 +21,47 @@ public class EffectsSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawn an effect by the given name;
+    /// Spawn an effect by the given name and return it;
     /// Do a debug.log if the name is incorrect
     /// </summary>
     /// <param name="name">The name of the effect, corresponds to a key in the dict of effects this holds</param>
     /// <param name="parent">Wether the gameObject that owns this script should be the parent or not</param>
-    public void SpawnEffect(string name, bool parent)
+    public GameObject SpawnEffect(string name, bool parent = false)
     {
         if (_effects.ContainsKey(name))
         {
             if (parent)
             {
-                Instantiate(_effects[name], transform);
+                return Instantiate(_effects[name], transform);
             }
             else
             {
-                Instantiate(_effects[name], transform.position, transform.rotation);
+                return Instantiate(_effects[name], transform.position, transform.rotation);
             }
         }
         else
         {
             Debug.Log(transform.name + " doesn't countain an effect named : " + name + ".");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Spawn an effect by the given name and return it;
+    /// Do a debug.log if the name is incorrect
+    /// </summary>
+    /// <param name="name">The name of the effect, corresponds to a key in the dict of effects this holds</param>
+    /// <param name="parent">The parent of the new object</param>
+    public GameObject SpawnEffect(string name, Transform parent)
+    {
+        if (_effects.ContainsKey(name))
+        {
+            return Instantiate(_effects[name], parent);
+        }
+        else
+        {
+            Debug.Log(transform.name + " doesn't countain an effect named : " + name + ".");
+            return null;
         }
     }
 }
