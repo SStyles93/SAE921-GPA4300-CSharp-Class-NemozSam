@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,8 +22,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _startTimer;
     [Tooltip("Time before starting the game once all players are ready")]
     [SerializeField] private float _startTime = 4.0f;
-    private bool gameIsReady = false;
-    private bool countDownIsStarted = false;
+    private bool _gameIsReady = false;
+    private bool _countDownIsStarted = false;
+    private bool _gameStarted;
 
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
@@ -33,7 +35,6 @@ public class GameManager : MonoBehaviour
     [Tooltip("Give the same to the players. The manager will know from this when a player is hit")]
     [SerializeField] private PlayerManagerInterface _playerInterface;
 
-    bool _gameStarted;
 
     private void Awake()
     {
@@ -97,12 +98,12 @@ public class GameManager : MonoBehaviour
                 SetReadyText(player, true);
             }
         }
-        if (_readyPlayers.Count == _players.Count && _readyPlayers.Count >= nbPlayersToPlay && !countDownIsStarted)
+        if (_readyPlayers.Count == _players.Count && _readyPlayers.Count >= nbPlayersToPlay && !_countDownIsStarted)
         {
             StartCoroutine(StartCountdown(_startTime));
-            countDownIsStarted = true;
+            _countDownIsStarted = true;
         }
-        if (gameIsReady)
+        if (_gameIsReady)
         {
             foreach (var player in _players)
             {
@@ -150,7 +151,12 @@ public class GameManager : MonoBehaviour
         _startTimer.GetComponent<Text>().text = "Start !";
         yield return new WaitForSecondsRealtime(1.0f);
         _startTimer.gameObject.SetActive(false);
-        gameIsReady = true;
+        _gameIsReady = true;
+    }
+
+    private void Win() 
+    {
+        SceneManager.LoadSceneAsync(0);
     }
 
     /// <summary>
@@ -167,8 +173,6 @@ public class GameManager : MonoBehaviour
         //Win
         if (_potentialWinners.Count == 1)
         {
-            GetComponent<RoundManager>()?.NewRound(_spawnPositions, _players, _potentialWinners[0]);
-
             //Reset the potential winners
             _potentialWinners = new List<GameObject>(_players);
 
@@ -180,6 +184,17 @@ public class GameManager : MonoBehaviour
                     _potentialWinners.RemoveAt(pIndex);
                 }
             }
+            if(_potentialWinners.Count == 1)
+            {
+                GetComponent<RoundManager>().Win(_potentialWinners[0], Win);
+            }
+            else
+            {
+                GetComponent<RoundManager>()?.NewRound(_spawnPositions, _players, _potentialWinners[0]);
+            }
+
+            
+ 
         }
     }
 }
