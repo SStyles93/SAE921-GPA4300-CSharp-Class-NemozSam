@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
+    [SerializeField] private List<GameObject> _readyPlayers;
     [SerializeField] private List<GameObject> _potentialWinners = new List<GameObject>();
     [Tooltip("Give the same to the players. The manager will know from this when a player is hit")]
     [SerializeField] private PlayerManagerInterface _playerInterface;
@@ -33,16 +34,7 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
-        //Blockes the players until there are enough to play
-        //TODO: Control for a validation from the instantiated players before the game starts
-        while(_players.Count < 2)
-        {
-            foreach(var player in _players)
-            {
-                player.GetComponent<PlayerGameLogic>().BlockPlayer(true);
-            }
-            break;
-        }
+        CheckIfReadyToStart();
     }
 
     /// <summary>
@@ -76,6 +68,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Controls if all the conditions are fulfilled before enabling the players interactions
+    /// </summary>
+    private void CheckIfReadyToStart()
+    {
+        foreach (var player in _players)
+        {
+            if (!player.GetComponent<PlayerGameLogic>().IsReady)
+                player.GetComponent<PlayerGameLogic>().BlockPlayer(true);
+            else if (!_readyPlayers.Contains(player))
+            {
+                //adds ready players to a list (to compare with instantiated player)
+                _readyPlayers.Add(player);
+                //Instantiate & activate ReadyText
+                PlayerUI playerUI =
+                _UIPositions[_readyPlayers.IndexOf(player)].
+                    GetComponentInChildren<PlayerUI>();
+                playerUI.InstantiateReadyText();
+                playerUI.EnableOrDisableReadyText(true);
+            }
+        }
+        if (_readyPlayers.Count == _players.Count)
+        {
+            foreach (var player in _players)
+            {
+                //TODO: Set a timer Before activating the following methods
+
+                //Unblock player
+                player.GetComponent<PlayerGameLogic>().BlockPlayer(false);
+                //Disable ReadyText
+                PlayerUI playerUI =
+               _UIPositions[_readyPlayers.IndexOf(player)].
+                   GetComponentInChildren<PlayerUI>();
+                playerUI.EnableOrDisableReadyText(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Method to check for the winning player
+    /// </summary>
+    /// <param name="player">player to check</param>
     void OnPlayerTakeDamage(PlayerGameLogic player)
     {
         //TODO, check for gameOvers

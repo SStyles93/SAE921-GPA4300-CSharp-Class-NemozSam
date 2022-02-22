@@ -5,38 +5,48 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    [SerializeField] GameObject _lifeObject;
+    [SerializeField] GameObject _lifeObjectRef;
     float _width;
 
     Color _playerColor;
     List<GameObject> _livesObjects = new List<GameObject>();
 
+    [SerializeField] Text _readyTextRef;
+    Text _readyText;
+
+    public void InstantiateReadyText()
+    {
+        _readyText = Instantiate(_readyTextRef, transform);
+    }
+    public void EnableOrDisableReadyText(bool enable)
+    {
+        _readyText.gameObject.SetActive(enable);
+    }
+
     public void AssignLives(int lives)
     {
-        _width = _lifeObject.GetComponent<RectTransform>().rect.width;
+        _width = _lifeObjectRef.GetComponent<RectTransform>().rect.width;
         for (int life = 0; life < lives; life++)
         {
             //Create the life icon
-            _livesObjects.Add(Instantiate(_lifeObject, _lifeObject.GetComponent<RectTransform>().position + 
-                new Vector3(life * _width, 0,0), _lifeObject.transform.rotation, transform));
+            _livesObjects.Add(Instantiate(_lifeObjectRef, _lifeObjectRef.GetComponent<RectTransform>().position + 
+                new Vector3(life * _width, 0,0), _lifeObjectRef.transform.rotation, transform));
 
             //enable it
             _livesObjects[_livesObjects.Count - 1].SetActive(true);
         }
     }
-
     public void AssignColor(Color color)
     {
         _playerColor = color;
 
-        _lifeObject.GetComponent<Image>().color = _playerColor;
+        _lifeObjectRef.GetComponent<Image>().color = _playerColor;
 
         foreach (var colorable in _livesObjects)
         {
             colorable.GetComponent<Image>().color = _playerColor;
         }
     }
-
     public void LoseLife()
     {
         if (_livesObjects.Count == 0)

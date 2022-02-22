@@ -6,9 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerGameLogic : MonoBehaviour
 {
     [SerializeField] int _lives  = 5;
-
-    public int Lives { get { return _lives; } }
-
+    [SerializeField] private bool _isReady = false;
 
     Color _playerColor;
     [SerializeField] List<SpriteRenderer> _colorableElements;
@@ -16,7 +14,11 @@ public class PlayerGameLogic : MonoBehaviour
 
     PlayerUI _lifeUI;
 
+    #region Properties
+    public int Lives { get { return _lives; } }
     public Color PlayerColor { get => _playerColor; set => _playerColor = value; }
+    public bool IsReady { get => _isReady; set => _isReady = value; }
+    #endregion
 
     public void LinkUI(PlayerUI playerUI)
     {
@@ -83,24 +85,16 @@ public class PlayerGameLogic : MonoBehaviour
     /// <summary>
     /// Enable the player without alowing him to interact
     /// </summary>
-    /// <param name="enable">wether to block the player or not. Set to true the player will be blocked</param>
-    public void BlockPlayer(bool enable)
+    /// <param name="block">wether to block the player or not. Set to true the player will be blocked</param>
+    public void BlockPlayer(bool block)
     {
         //Access PlayerActions
-        GetComponent<PlayerActions>().CanShoot = !enable;
-        GetComponent<PlayerActions>().CanSpecial = !enable;
+        GetComponent<PlayerActions>().CanShoot = !block;
+        GetComponent<PlayerActions>().CanSpecial = !block;
         //Access PlayerMovement
-        GetComponent<PlayerMovement>().CanMove = !enable;
-        //Access Player's physics
-        GetComponent<Collider2D>().enabled = enable;
-        GetComponent<Rigidbody2D>().simulated = enable;
-        //Disable the player's visuals
-        foreach (var sp in GetComponentsInChildren<SpriteRenderer>())
-        {
-            sp.enabled = enable;
-        }
-        //Disable Player's animator
-        GetComponentInChildren<PlayerVisuals>().GetComponentInChildren<Animator>().enabled = !enable;
+        GetComponent<PlayerMovement>().CanMove = !block;
+        //Access Player Animations
+        GetComponentInChildren<PlayerVisuals>().GetComponentInChildren<Animator>().enabled = !block;
     }
 
     /// <summary>

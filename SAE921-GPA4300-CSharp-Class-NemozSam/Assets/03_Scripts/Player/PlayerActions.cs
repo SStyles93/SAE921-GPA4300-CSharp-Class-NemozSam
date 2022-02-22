@@ -35,6 +35,7 @@ public class PlayerActions : MonoBehaviour
         _gameLogic = GetComponent<PlayerGameLogic>();
 
         _input.actions["Fire"].performed += TryShoot;
+        _input.actions["Fire"].performed += TrySetReady;
 
         _input.actions["Special"].performed += TrySpecial;
         _input.actions["Special"].canceled += TryStopSpecial;
@@ -60,12 +61,23 @@ public class PlayerActions : MonoBehaviour
         }
     }
 
+    void TrySetReady(InputAction.CallbackContext context)
+    {
+        if (!_gameLogic.IsReady)
+        {
+            SetReady();
+        }
+    }
+    void SetReady()
+    {
+        _gameLogic.IsReady = true;
+    }
+
     void TryShoot(InputAction.CallbackContext context)
     {
         if (_loaded && _canShoot)
             Shoot();
     }
-
     void Shoot()
     {
         //Create the bullet
@@ -81,13 +93,6 @@ public class PlayerActions : MonoBehaviour
         if (!_slowDownInstance && _canSpecial)
             Special();
     }
-
-    void TryStopSpecial(InputAction.CallbackContext context)
-    {
-        if (_slowDownInstance)
-            StopSpecial();
-    }
-
     void Special()
     {
         _slowDownInstance = Instantiate(_slowDownEffect, transform);
@@ -99,6 +104,11 @@ public class PlayerActions : MonoBehaviour
         StartCoroutine(UpdateSpecialInstance());
     }
 
+    void TryStopSpecial(InputAction.CallbackContext context)
+    {
+        if (_slowDownInstance)
+            StopSpecial();
+    }
     void StopSpecial()
     {
         Destroy(_slowDownInstance);
