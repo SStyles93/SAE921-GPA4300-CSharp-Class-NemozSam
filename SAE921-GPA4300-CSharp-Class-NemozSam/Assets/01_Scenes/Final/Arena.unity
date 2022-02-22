@@ -178,7 +178,9 @@ MonoBehaviour:
   - {fileID: 658328287}
   - {fileID: 658328286}
   - {fileID: 658328285}
-  startTimer: {fileID: 658328284}
+  _startTimer: {fileID: 658328284}
+  _startTime: 4
+  gameIsReady: 0
   _players: []
   _readyPlayers: []
   nbPlayersToPlay: 2
