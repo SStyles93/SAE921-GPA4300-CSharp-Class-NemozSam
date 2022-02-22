@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
     [SerializeField] private List<GameObject> _readyPlayers;
+    [Tooltip("Has to be set between 2 and 4 normally. Can be set to 1 for debug purpose.")]
+    [SerializeField] private int nbPlayersToPlay = 2;
     [SerializeField] private List<GameObject> _potentialWinners = new List<GameObject>();
     [Tooltip("Give the same to the players. The manager will know from this when a player is hit")]
     [SerializeField] private PlayerManagerInterface _playerInterface;
@@ -87,7 +89,7 @@ public class GameManager : MonoBehaviour
                 SetReadyText(player, true);
             }
         }
-        if (_readyPlayers.Count == _players.Count)
+        if (_readyPlayers.Count == _players.Count && _readyPlayers.Count >= nbPlayersToPlay)
         {
             foreach (var player in _players)
             {
