@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
     private void SetReadyText(GameObject player, bool state)
     {
         PlayerUI playerUI =
-                _UIPositions[_readyPlayers.IndexOf(player)].
+                _UIPositions[_players.IndexOf(player)].
                     GetComponentInChildren<PlayerUI>();
         if(state == true)
             playerUI.InstantiateReadyText();
