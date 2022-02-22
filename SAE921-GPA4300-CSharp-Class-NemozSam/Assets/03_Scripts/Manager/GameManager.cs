@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _UIPrefab;
     [Tooltip("The players UI Positions on the screen")]
     [SerializeField] private List<GameObject> _UIPositions;
+    [Tooltip("The UICanvas's startTimer")]
+    [SerializeField] private GameObject startTimer;
 
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
@@ -89,12 +91,13 @@ public class GameManager : MonoBehaviour
         {
             foreach (var player in _players)
             {
-                //TODO: Set a timer Before activating the following methods
-
-                //Unblock player
-                player.GetComponent<PlayerGameLogic>().BlockPlayer(false);
                 //Disable ReadyText
                 SetReadyText(player, false);
+
+                //TODO: Set a timer and show in "_startTimer"(UI) before activating the following methods
+                
+                //Unblock player
+                player.GetComponent<PlayerGameLogic>().BlockPlayer(false);
             }
         }
     }
