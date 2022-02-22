@@ -86,6 +86,10 @@ public class PlayerActions : MonoBehaviour
         //Handle the gun logic
         _loaded = false;
         StartCoroutine(Reload(_gunReloadTime));
+
+        //Create the effects
+        GetComponent<EffectsSpawner>().SpawnEffect("MuzzleFlash", _shootPoint.transform);
+        Camera.main.GetComponent<CameraEffects>().AddShake(1.0f);
     }
 
     void TrySpecial(InputAction.CallbackContext context)

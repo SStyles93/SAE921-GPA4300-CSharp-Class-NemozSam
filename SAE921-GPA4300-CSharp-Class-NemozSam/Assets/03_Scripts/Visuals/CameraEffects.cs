@@ -11,14 +11,42 @@ public class CameraEffects : MonoBehaviour
 
     float _baseZoom;
     Vector3 _basePos;
+    Quaternion _baseRot;
 
     Camera _camera;
+
+    private float _shakeAmount = 1.0f;
+    [SerializeField] float _shakeCoeff = 0.5f;
+    [SerializeField] float _shakeSpeed = 2.0f;
 
     private void Start()
     {
         _camera = GetComponent<Camera>();
         _baseZoom = _camera.orthographicSize;
         _basePos = transform.position;
+        _baseRot = transform.rotation;
+    }
+
+    public void AddShake(float shake)
+    {
+        _shakeAmount += shake;
+    }
+
+    private void Update()
+    {
+        //TODO Make this work
+        //if (_shakeAmount > 0.0f)
+        //{
+        //    float direction = 1.0f;
+        //    float goal = _baseZoom + _shakeAmount + _shakeCoeff * Mathf.Sin(Time.time * _shakeSpeed);
+        //    _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, goal, 0.5f);
+
+        //    _shakeAmount -= Time.unscaledDeltaTime;
+        //}
+        //else
+        //{
+        //    _shakeAmount = 0.0f;
+        //}
     }
 
     public IEnumerator ResetCamera()
