@@ -95,7 +95,8 @@ public class GameManager : MonoBehaviour
                 SetReadyText(player, false);
 
                 //TODO: Set a timer and show in "_startTimer"(UI) before activating the following methods
-                
+                StartCoroutine(StartCountdown(3.0f));
+
                 //Unblock player
                 player.GetComponent<PlayerGameLogic>().BlockPlayer(false);
             }
@@ -114,6 +115,16 @@ public class GameManager : MonoBehaviour
                     GetComponentInChildren<PlayerUI>();
         playerUI.InstantiateReadyText();
         playerUI.EnableOrDisableReadyText(state);
+    }
+
+    /// <summary>
+    /// Coroutine used to countdown time and prepare for game + UI(3,2,1,START!)
+    /// </summary>
+    /// <param name="time">Time before game start</param>
+    /// <returns></returns>
+    private IEnumerator StartCountdown(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 
     /// <summary>
