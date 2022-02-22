@@ -26,18 +26,20 @@ public class CameraEffects : MonoBehaviour
         yield return ZoomOnTarget(_basePos, false);
     }
 
-    public IEnumerator ZoomOnTarget(Vector3 target, bool zoomIn = true)
+    public IEnumerator ZoomOnTarget(Vector3 target, bool zoomIn = true, float speedMult = 1.0f)
     {
         float zoomTo = zoomIn ? _zoomedSize : _baseZoom;
 
         do
         {
             //Move to position
-            transform.position = Vector3.Lerp(transform.position, target, Time.unscaledDeltaTime * _moveSpeed);
+            transform.position = Vector3.Lerp(transform.position, target, Time.unscaledDeltaTime * _moveSpeed * speedMult);
             transform.position = new Vector3(transform.position.x, transform.position.y, _basePos.z);
 
             //Zoom in
-            _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, zoomTo, Time.unscaledDeltaTime * _zoomSpeed);
+            _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, zoomTo,
+                Time.unscaledDeltaTime * _zoomSpeed * speedMult);
+
             yield return null;
         } while (new Vector2(transform.position.x - target.x,
         transform.position.y - target.y).sqrMagnitude > _margin ||

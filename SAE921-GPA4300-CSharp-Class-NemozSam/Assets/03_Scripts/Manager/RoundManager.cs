@@ -1,12 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RoundManager : MonoBehaviour
 {
     public void NewRound(List<Transform> spawnPositions, List<GameObject> players, GameObject winner)
     {
         StartCoroutine(ResetRound(spawnPositions, players, winner));
+    }
+
+    public void Win(GameObject winner, UnityAction winAction)
+    {
+        StartCoroutine(CelebrateWinner(winner, winAction));
+    }
+
+    IEnumerator CelebrateWinner(GameObject winner, UnityAction action)
+    {
+        Time.timeScale = 0.0f;
+        yield return ClearLastRound();
+
+        if (Camera.main.GetComponent<CameraEffects>())
+            yield return Camera.main.GetComponent<CameraEffects>().ZoomOnTarget(winner.transform.position, speedMult:0.5f);
+
+        for (int i = 0; i < 3; i++)
+        {
+            yield return Celebration();
+        }
+
+        action.Invoke();
     }
 
     IEnumerator ResetRound(List<Transform> spawnPositions, List<GameObject> players, GameObject winner)
@@ -37,6 +59,7 @@ public class RoundManager : MonoBehaviour
 
     IEnumerator Celebration()
     {
+        //Todo, add nice effect
         yield return new WaitForSecondsRealtime(1.0f);
     }
 
