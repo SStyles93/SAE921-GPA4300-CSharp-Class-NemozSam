@@ -28,6 +28,7 @@ public class RoundManager : MonoBehaviour
             yield return Celebration();
         }
 
+        Time.timeScale = 1.0f;
         action.Invoke();
     }
 

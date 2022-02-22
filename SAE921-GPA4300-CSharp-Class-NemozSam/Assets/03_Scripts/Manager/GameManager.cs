@@ -173,6 +173,8 @@ public class GameManager : MonoBehaviour
         //Win
         if (_potentialWinners.Count == 1)
         {
+            GameObject winner = _potentialWinners[0];
+
             //Reset the potential winners
             _potentialWinners = new List<GameObject>(_players);
 
@@ -186,15 +188,12 @@ public class GameManager : MonoBehaviour
             }
             if(_potentialWinners.Count == 1)
             {
-                GetComponent<RoundManager>().Win(_potentialWinners[0], Win);
+                GetComponent<RoundManager>().Win(winner, Win);
             }
             else
             {
-                GetComponent<RoundManager>()?.NewRound(_spawnPositions, _players, _potentialWinners[0]);
+                GetComponent<RoundManager>()?.NewRound(_spawnPositions, _players, winner);
             }
-
-            
- 
         }
     }
 }

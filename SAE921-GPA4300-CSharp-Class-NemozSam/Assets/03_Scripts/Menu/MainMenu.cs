@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour
         _rectTransform = GetComponent<RectTransform>();
         _goal = _rectTransform.position.y * 3.0f;
         _transitionSpeed *= Screen.height;
+        _transition = false;
     }
 
     public void PlayGame()
