@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 public class PlayerGameLogic : MonoBehaviour
 {
     [SerializeField] int _lives  = 5;
-    [SerializeField] private bool _isReady = false;
+    private bool _isReady = false;
+
+    bool _canTakeDamage = true;
 
     Color _playerColor;
     [SerializeField] List<SpriteRenderer> _colorableElements;
@@ -40,6 +42,9 @@ public class PlayerGameLogic : MonoBehaviour
 
     public void OnTakeDamage()
     {
+        if (!_canTakeDamage)
+            return;
+
         //Disable the player
         DisableOrEnablePlayer(false);
 
@@ -66,6 +71,8 @@ public class PlayerGameLogic : MonoBehaviour
     /// <param name="enable">wether to enable or disable the player</param>
     public void DisableOrEnablePlayer(bool enable)
     {
+        _canTakeDamage = enable;
+
         GetComponent<PlayerActions>().CanShoot = enable;
 
         GetComponent<PlayerActions>().CanSpecial = enable;

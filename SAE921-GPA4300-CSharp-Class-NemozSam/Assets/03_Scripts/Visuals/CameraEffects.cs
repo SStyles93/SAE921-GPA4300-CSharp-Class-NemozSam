@@ -16,8 +16,14 @@ public class CameraEffects : MonoBehaviour
     Camera _camera;
 
     private float _shakeAmount = 1.0f;
-    [SerializeField] float _shakeCoeff = 0.5f;
+    [SerializeField] float _shakeCoeff = 0.2f;
+    [SerializeField] float _shakeRotCoeff = 2.0f;
+    [SerializeField] float _maxShakeRot = 15.0f;
+    [SerializeField] float _maxShakeZoom = 2.0f;
     [SerializeField] float _shakeSpeed = 2.0f;
+    Quaternion _shakeGoalRot;
+    float _shakeGoalSize;
+    bool _resetShakeGoals = true;
 
     private void Start()
     {
@@ -34,18 +40,27 @@ public class CameraEffects : MonoBehaviour
 
     private void Update()
     {
-        //TODO Make this work
         //if (_shakeAmount > 0.0f)
         //{
-        //    float direction = 1.0f;
-        //    float goal = _baseZoom + _shakeAmount + _shakeCoeff * Mathf.Sin(Time.time * _shakeSpeed);
-        //    _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, goal, 0.5f);
+        //    //randomly select a goal rotation and orthographic size based on _shakeAmount if we don't have one
+        //    if(_resetShakeGoals)
+        //    {
+        //        _resetShakeGoals = false;
 
-        //    _shakeAmount -= Time.unscaledDeltaTime;
-        //}
-        //else
-        //{
-        //    _shakeAmount = 0.0f;
+        //        //Find a goal rotation
+        //        Vector3 rot = _baseRot.eulerAngles;
+        //        _shakeGoalRot = Quaternion.Euler(rot.x, rot.y,
+        //            rot.z + Mathf.Clamp(Random.Range(-_shakeAmount * _shakeRotCoeff, _shakeAmount * _shakeRotCoeff), -_maxShakeRot, _maxShakeRot));
+
+        //        //Find a goal orthographic size
+
+        //    }
+
+        //    //Lerp to it
+
+        //    //null the goal if we're close to them
+
+        //    _shakeAmount -= Time.deltaTime;
         //}
     }
 

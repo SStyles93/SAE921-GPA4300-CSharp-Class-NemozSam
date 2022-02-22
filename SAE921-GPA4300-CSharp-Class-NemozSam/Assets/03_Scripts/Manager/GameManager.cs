@@ -56,6 +56,12 @@ public class GameManager : MonoBehaviour
     /// <param name="playerInput"> Players Input given by the PlayerInputManager after an input was emitted</param>
     private void OnPlayerJoined(PlayerInput playerInput)
     {
+        if (_countDownIsStarted)
+        {
+            Destroy(playerInput.gameObject);
+            return;
+        }
+
         Debug.Log($"Player {_players.Count} has connected");
 
         //Add player into our list of players
@@ -165,8 +171,6 @@ public class GameManager : MonoBehaviour
     /// <param name="player">player to check</param>
     private void OnPlayerTakeDamage(PlayerGameLogic player)
     {
-        //TODO, check for gameOvers
-
         if (_potentialWinners.Count > 1)
             _potentialWinners.Remove(player.gameObject);
 
@@ -179,13 +183,22 @@ public class GameManager : MonoBehaviour
             _potentialWinners = new List<GameObject>(_players);
 
             //Clear out the dead ones
+            List<int> indexesToRemove = new List<int>();
             for (int pIndex = 0; pIndex < _potentialWinners.Count; pIndex++)
             {
                 if(_potentialWinners[pIndex].GetComponent<PlayerGameLogic>().Lives <= 0)
                 {
-                    _potentialWinners.RemoveAt(pIndex);
+                    //Add them to the list of index to remove
+                    indexesToRemove.Add(pIndex);
                 }
             }
+            //Remove the found index
+            for (int removeI = indexesToRemove.Count - 1; removeI >= 0; removeI--)
+            {
+                _potentialWinners.RemoveAt(removeI);
+            }
+
+
             if(_potentialWinners.Count == 1)
             {
                 GetComponent<RoundManager>().Win(winner, Win);
