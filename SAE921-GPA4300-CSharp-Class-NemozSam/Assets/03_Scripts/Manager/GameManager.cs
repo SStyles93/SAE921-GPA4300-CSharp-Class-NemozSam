@@ -113,6 +113,7 @@ public class GameManager : MonoBehaviour
         PlayerUI playerUI =
                 _UIPositions[_readyPlayers.IndexOf(player)].
                     GetComponentInChildren<PlayerUI>();
+        if(state == true)
         playerUI.InstantiateReadyText();
         playerUI.EnableOrDisableReadyText(state);
     }
