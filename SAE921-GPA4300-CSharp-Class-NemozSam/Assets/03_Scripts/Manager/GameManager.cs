@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _startTimer;
     [Tooltip("Time before starting the game once all players are ready")]
     [SerializeField] private float _startTime = 4.0f;
-    [SerializeField] private bool gameIsReady = false;
+    private bool gameIsReady = false;
+    private bool countDownIsStarted = false;
 
     [Header("Player \"Tracking\"")]
     [SerializeField] private List<GameObject> _players;
@@ -96,10 +97,10 @@ public class GameManager : MonoBehaviour
                 SetReadyText(player, true);
             }
         }
-        if (_readyPlayers.Count == _players.Count && _readyPlayers.Count >= nbPlayersToPlay && !gameIsReady)
+        if (_readyPlayers.Count == _players.Count && _readyPlayers.Count >= nbPlayersToPlay && !countDownIsStarted)
         {
-            gameIsReady = true;
             StartCoroutine(StartCountdown(_startTime));
+            countDownIsStarted = true;
         }
         if (gameIsReady)
         {
@@ -139,6 +140,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartCountdown(float time)
     {
         _startTimer.gameObject.SetActive(true);
+        //timer check is > 1.0f so that the "Start !" comes after the 1 and not the 0
         while (time > 1.0f)
         {
             time -= Time.unscaledDeltaTime;
@@ -148,6 +150,7 @@ public class GameManager : MonoBehaviour
         _startTimer.GetComponent<Text>().text = "Start !";
         yield return new WaitForSecondsRealtime(1.0f);
         _startTimer.gameObject.SetActive(false);
+        gameIsReady = true;
     }
 
     /// <summary>
