@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
         _playerInterface.AddDamageReportAction(OnPlayerTakeDamage);
     }
-    public void Update()
+    private void Update()
     {
         CheckIfReadyToStart();
     }
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
     /// Method to check for the winning player
     /// </summary>
     /// <param name="player">player to check</param>
-    void OnPlayerTakeDamage(PlayerGameLogic player)
+    private void OnPlayerTakeDamage(PlayerGameLogic player)
     {
         //TODO, check for gameOvers
 
