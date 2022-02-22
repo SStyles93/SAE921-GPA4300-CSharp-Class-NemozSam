@@ -33,11 +33,6 @@ public class RoundManager : MonoBehaviour
 
             yield return new WaitForSecondsRealtime(0.1f);
         }
-        //Delete remaining bullets that player might have shot in-between
-        foreach (var bullet in FindObjectsOfType<Bullet>())
-        {
-            Destroy(bullet.gameObject);
-        }
     }
 
     IEnumerator Celebration()
@@ -50,16 +45,26 @@ public class RoundManager : MonoBehaviour
         if (Camera.main.GetComponent<CameraEffects>())
             yield return Camera.main.GetComponent<CameraEffects>().ResetCamera();
 
-        //Reset each player's spawn
-        for (int i = 0; i < players.Count; i++)
+        //Disable all players while the round is being set up again
+        foreach (var player in players)
+            player.GetComponent<PlayerGameLogic>().DisableOrEnablePlayer(false);
+
+        //Delete remaining bullets that player might have shot in-between
+        foreach (var bullet in FindObjectsOfType<Bullet>())
         {
-            players[i].GetComponent<PlayerGameLogic>().Spawn(spawnPositions[i]);
+            Destroy(bullet.gameObject);
         }
 
         foreach (var cactus in FindObjectsOfType<Cactus>())
         {
             if (cactus.Regrow())
                 yield return new WaitForSecondsRealtime(0.1f);
+        }
+
+        //Reset each player's spawn
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].GetComponent<PlayerGameLogic>().Spawn(spawnPositions[i]);
         }
     }
 }

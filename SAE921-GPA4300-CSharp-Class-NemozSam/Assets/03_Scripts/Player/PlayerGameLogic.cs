@@ -38,29 +38,34 @@ public class PlayerGameLogic : MonoBehaviour
 
     public void OnTakeDamage()
     {
+        //Disable the player
         DisableOrEnablePlayer(false);
-        GetComponent<EffectsSpawner>().SpawnEffect("Blood", false);
 
+        //Spawn the effect
+        if(--_lives == 0)
+        {
+            GetComponent<EffectsSpawner>().SpawnEffect("Tomb", false);
+        }
+        else
+        {
+            GetComponent<EffectsSpawner>().SpawnEffect("Blood", false);
+        }
+
+        //Update the ui
         _lifeUI.LoseLife();
-        _lives--;
 
+        //Report the damage
         _managerInterface.ReportDamage(this);
-    }
-
-    public void Die()
-    {
-        DisableOrEnablePlayer(false);
-
-        GetComponent<EffectsSpawner>().SpawnEffect("Tomb", false);
     }
 
     /// <summary>
     /// Enable or disable the player's ability to move, act and be seen without disabling the playerInputs.
     /// </summary>
     /// <param name="enable">wether to enable or disable the player</param>
-    void DisableOrEnablePlayer(bool enable)
+    public void DisableOrEnablePlayer(bool enable)
     {
         GetComponent<PlayerActions>().CanShoot = enable;
+
         GetComponent<PlayerActions>().CanSpecial = enable;
 
         GetComponent<PlayerMovement>().CanMove = enable;
@@ -68,6 +73,7 @@ public class PlayerGameLogic : MonoBehaviour
         GetComponent<Collider2D>().enabled = enable;
         GetComponent<Rigidbody2D>().simulated = enable;
 
+        //Disable the player's visuals
         foreach(var sp in GetComponentsInChildren<SpriteRenderer>())
         {
             sp.enabled = enable;
