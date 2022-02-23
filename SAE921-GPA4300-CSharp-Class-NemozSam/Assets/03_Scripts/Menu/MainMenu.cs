@@ -25,6 +25,7 @@ public class MainMenu : MonoBehaviour
             return;
 
         StartCoroutine(TransitionToNextScene());
+        FindObjectOfType<DoorsMenu>()?.OpenDoors();
    }
 
     IEnumerator TransitionToNextScene()

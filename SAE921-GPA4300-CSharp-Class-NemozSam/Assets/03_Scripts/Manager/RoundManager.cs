@@ -5,6 +5,10 @@ using UnityEngine.Events;
 
 public class RoundManager : MonoBehaviour
 {
+    [SerializeField] AudioSource _effectsSource;
+    [SerializeField] AudioClip _roundWinSound;
+    [SerializeField] AudioClip _gameWinSound;
+
     public void NewRound(List<Transform> spawnPositions, List<GameObject> players, GameObject winner)
     {
         StartCoroutine(ResetRound(spawnPositions, players, winner));
@@ -20,13 +24,12 @@ public class RoundManager : MonoBehaviour
         Time.timeScale = 0.0f;
         yield return ClearLastRound();
 
+        _effectsSource.PlayOneShot(_gameWinSound);
+
         if (Camera.main.GetComponent<CameraEffects>())
             yield return Camera.main.GetComponent<CameraEffects>().ZoomOnTarget(winner.transform.position, speedMult:0.5f);
 
-        for (int i = 0; i < 3; i++)
-        {
-            yield return Celebration();
-        }
+        yield return new WaitForSecondsRealtime(3.0f);
 
         Time.timeScale = 1.0f;
         action.Invoke();
@@ -37,10 +40,12 @@ public class RoundManager : MonoBehaviour
         Time.timeScale = 0.0f;
         yield return ClearLastRound();
 
+        _effectsSource.PlayOneShot(_roundWinSound);
         if (Camera.main.GetComponent<CameraEffects>())
             yield return Camera.main.GetComponent<CameraEffects>().ZoomOnTarget(winner.transform.position);
 
         yield return Celebration();
+        _effectsSource.Stop();
 
         yield return SetupNewRound(spawnPositions, players);
 
@@ -60,7 +65,6 @@ public class RoundManager : MonoBehaviour
 
     IEnumerator Celebration()
     {
-        //Todo, add nice effect
         yield return new WaitForSecondsRealtime(1.0f);
     }
 

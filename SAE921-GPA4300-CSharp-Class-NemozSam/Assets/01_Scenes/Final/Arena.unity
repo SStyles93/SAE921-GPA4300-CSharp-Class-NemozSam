@@ -1282,6 +1282,9 @@ MonoBehaviour:
   _moveSpeed: 10
   _zoomedSize: 2
   _shakeCoeff: 0.2
+  _shakeRotCoeff: 2
+  _maxShakeRot: 15
+  _maxShakeZoom: 2
   _shakeSpeed: 2
 --- !u!81 &1469978135
 AudioListener:

@@ -35,9 +35,12 @@ public class GameManager : MonoBehaviour
     [Tooltip("Give the same to the players. The manager will know from this when a player is hit")]
     [SerializeField] private PlayerManagerInterface _playerInterface;
 
+    [SerializeField] AudioSource _musicSource;
 
     private void Awake()
     {
+        _countDownIsStarted = false;
+
         //Link to the playerInputManager
         _playerInputManager = GetComponent<PlayerInputManager>();
         _playerInputManager.onPlayerJoined += OnPlayerJoined;
@@ -146,6 +149,9 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator StartCountdown(float time)
     {
+        //Play music
+        _musicSource.Play();
+
         _startTimer.gameObject.SetActive(true);
         //timer check is > 1.0f so that the "Start !" comes after the 1 and not the 0
         while (time > 1.0f)
