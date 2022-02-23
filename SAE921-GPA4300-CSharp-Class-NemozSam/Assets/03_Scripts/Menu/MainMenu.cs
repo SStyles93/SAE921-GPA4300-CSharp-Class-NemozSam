@@ -17,6 +17,8 @@ public class MainMenu : MonoBehaviour
         _goal = _rectTransform.position.y * 3.0f;
         _transitionSpeed *= Screen.height;
         _transition = false;
+
+        Cursor.visible = false;
     }
 
     public void PlayGame()
