@@ -1281,11 +1281,12 @@ MonoBehaviour:
   _zoomSpeed: 5
   _moveSpeed: 10
   _zoomedSize: 2
-  _shakeCoeff: 0.2
-  _shakeRotCoeff: 2
-  _maxShakeRot: 15
-  _maxShakeZoom: 2
-  _shakeSpeed: 2
+  _minShake: 0.5
+  _shakeCoeff: 0.1
+  _shakeRotCoeff: 1
+  _maxShakeRot: 20
+  _maxShakeZoom: 1
+  _shakeSpeed: 100
 --- !u!81 &1469978135
 AudioListener:
   m_ObjectHideFlags: 0

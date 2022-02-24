@@ -89,7 +89,7 @@ public class PlayerActions : MonoBehaviour
 
         //Create the effects
         GetComponent<EffectsSpawner>().SpawnEffect("MuzzleFlash", _shootPoint.transform);
-        Camera.main.GetComponent<CameraEffects>().AddShake(1.0f);
+        Camera.main.GetComponent<CameraEffects>()?.AddShake(0.05f);
     }
 
     void TrySpecial(InputAction.CallbackContext context)

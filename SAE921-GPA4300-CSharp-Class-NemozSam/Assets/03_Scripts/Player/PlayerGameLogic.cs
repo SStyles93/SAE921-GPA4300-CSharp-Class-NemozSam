@@ -22,6 +22,12 @@ public class PlayerGameLogic : MonoBehaviour
     public bool IsReady { get => _isReady; set => _isReady = value; }
     #endregion
 
+    private void Start()
+    {
+        //Shake camera
+        Camera.main.GetComponent<CameraEffects>()?.AddShake(0.2f);
+    }
+
     public void LinkUI(PlayerUI playerUI)
     {
         _lifeUI = playerUI;
@@ -49,6 +55,7 @@ public class PlayerGameLogic : MonoBehaviour
         DisableOrEnablePlayer(false);
 
         //Spawn the effect
+        Camera.main.GetComponent<CameraEffects>().AddShake(0.5f);
         if(--_lives == 0)
         {
             GetComponent<EffectsSpawner>().SpawnEffect("Tomb", false);

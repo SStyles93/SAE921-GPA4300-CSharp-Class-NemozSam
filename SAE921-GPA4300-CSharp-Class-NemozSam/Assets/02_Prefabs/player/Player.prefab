@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74aacd586692bbe4f9a7de7596bbefe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _powerMaxCharge: 10
+  _powerMaxCharge: 7.5
   _powerChargeRate: 3.5
   _gunReloadTime: 2.5
   _shootPoint: {fileID: 3230119137396800940}

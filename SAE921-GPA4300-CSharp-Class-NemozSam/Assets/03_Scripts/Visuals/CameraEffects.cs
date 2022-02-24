@@ -15,11 +15,20 @@ public class CameraEffects : MonoBehaviour
 
     Camera _camera;
 
-    private float _shakeAmount = 1.0f;
+    [Header("Shake")]
+    bool _canShake = true;
+    private float _shakeAmount = 0.0f;
+    [Tooltip("Use this value for the minimum shaking that can happen")]
+    [SerializeField] float _minShake = 0.7f;
+    [Tooltip("How quickly the camera size changes scale with shake amount")]
     [SerializeField] float _shakeCoeff = 0.2f;
+    [Tooltip("How quickly the camera rotation changes scale with shake amount")]
     [SerializeField] float _shakeRotCoeff = 2.0f;
+    [Tooltip("Maximum rotation the shaking can reach")]
     [SerializeField] float _maxShakeRot = 15.0f;
+    [Tooltip("Maximum difference with base zoom the shaking can reach")]
     [SerializeField] float _maxShakeZoom = 2.0f;
+    [Tooltip("How quickly the camera moves between different rotations and sizes")]
     [SerializeField] float _shakeSpeed = 2.0f;
     Quaternion _shakeGoalRot;
     float _shakeGoalSize;
@@ -28,40 +37,76 @@ public class CameraEffects : MonoBehaviour
     private void Start()
     {
         _camera = GetComponent<Camera>();
-        _baseZoom = _camera.orthographicSize;
+        _baseZoom = _shakeGoalSize = _camera.orthographicSize;
         _basePos = transform.position;
-        _baseRot = transform.rotation;
+        _baseRot = _shakeGoalRot = transform.rotation;
     }
 
+    /// <summary>
+    /// Add time and power (same value) to the current shaking
+    /// Start shaking if it wasn't
+    /// </summary>
+    /// <param name="shake">The amount in seconds to shake for</param>
     public void AddShake(float shake)
     {
         _shakeAmount += shake;
     }
 
+    /// <summary>
+    /// Force to shake for a a given time. Overrides current shaking.
+    /// </summary>
+    /// <param name="shake">The amount in seconds to shake for</param>
+    public void ReplaceShake(float shake)
+    {
+        _shakeAmount = shake;
+    }
+
     private void Update()
     {
-        //if (_shakeAmount > 0.0f)
-        //{
-        //    //randomly select a goal rotation and orthographic size based on _shakeAmount if we don't have one
-        //    if(_resetShakeGoals)
-        //    {
-        //        _resetShakeGoals = false;
+        if (_shakeAmount > 0.0f && _canShake)
+        {
+            //randomly select a goal rotation and orthographic size based on _shakeAmount if we don't have one
+            if (_resetShakeGoals)
+            {
+                _resetShakeGoals = false;
+                float shake = Mathf.Max(_minShake, _shakeAmount);
+                //Find a goal rotation
+                Vector3 rot = _baseRot.eulerAngles;
+                _shakeGoalRot = Quaternion.Euler(rot.x, rot.y,
+                    rot.z + Mathf.Clamp(Random.Range(-shake * _shakeRotCoeff, shake * _shakeRotCoeff), -_maxShakeRot, _maxShakeRot));
 
-        //        //Find a goal rotation
-        //        Vector3 rot = _baseRot.eulerAngles;
-        //        _shakeGoalRot = Quaternion.Euler(rot.x, rot.y,
-        //            rot.z + Mathf.Clamp(Random.Range(-_shakeAmount * _shakeRotCoeff, _shakeAmount * _shakeRotCoeff), -_maxShakeRot, _maxShakeRot));
+                //Find a goal orthographic size
+                _shakeGoalSize = _baseZoom + Mathf.Clamp(Random.Range(-shake * _shakeCoeff, shake * _shakeCoeff), -_maxShakeZoom, _maxShakeZoom);
+            }
+            _shakeAmount -= Time.deltaTime;
+        }
+        else
+        {
+            //Reset shake
+            _shakeAmount = 0.0f;
+            
+            //Go to a normal rotation
+            _shakeGoalRot = _baseRot;
 
-        //        //Find a goal orthographic size
+            //Reset the size to the normal amount only if we're alowed to normally shake
+            //(if not, we're zooming and we don't want to modify the size)
+            if (_canShake)
+            {
+                _shakeGoalSize = _baseZoom;
+            }
+        }
 
-        //    }
+        //lerp to goals
+        if (_canShake)
+        {
+            _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, _shakeGoalSize, _shakeSpeed * Time.deltaTime);
+        }
+        transform.rotation = Quaternion.Lerp(transform.rotation , _shakeGoalRot , _shakeSpeed * Time.deltaTime);
 
-        //    //Lerp to it
-
-        //    //null the goal if we're close to them
-
-        //    _shakeAmount -= Time.deltaTime;
-        //}
+        //Set a bool to reset them if we're close enough
+        if (Mathf.Abs(_camera.orthographicSize - _shakeGoalSize) < _margin ||
+            Mathf.Abs(transform.rotation.eulerAngles.z - _shakeGoalRot.eulerAngles.y) < _margin)
+            _resetShakeGoals = true;
     }
 
     public IEnumerator ResetCamera()
@@ -71,6 +116,7 @@ public class CameraEffects : MonoBehaviour
 
     public IEnumerator ZoomOnTarget(Vector3 target, bool zoomIn = true, float speedMult = 1.0f)
     {
+        _canShake = false;
         float zoomTo = zoomIn ? _zoomedSize : _baseZoom;
 
         do
@@ -91,5 +137,7 @@ public class CameraEffects : MonoBehaviour
         //Snap the camera to the correct values
         transform.position = new Vector3(target.x, target.y, transform.position.z);
         _camera.orthographicSize = zoomTo;
+
+        _canShake = true;
     }
 }
