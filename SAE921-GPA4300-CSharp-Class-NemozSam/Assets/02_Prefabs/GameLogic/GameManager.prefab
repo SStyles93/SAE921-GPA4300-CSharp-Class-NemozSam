@@ -92,6 +92,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 958859031985127771, guid: 7f23385a58859cf439c84397e8e40ce1, type: 3}
+  _playerColors:
+  - {r: 1, g: 0.36457697, b: 0.3433962, a: 1}
+  - {r: 0.6036846, g: 0.7952298, b: 0.8962264, a: 1}
+  - {r: 0.2901961, g: 0.6862745, b: 0.32941177, a: 1}
+  - {r: 0.9450981, g: 0.73333335, b: 0.24313727, a: 1}
   _spawnPositions:
   - {fileID: 0}
   - {fileID: 0}

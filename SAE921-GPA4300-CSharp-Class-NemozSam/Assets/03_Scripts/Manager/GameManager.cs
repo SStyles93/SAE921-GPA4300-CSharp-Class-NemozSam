@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [Header("Player References")]
     [Tooltip("The prefab you want to use as \"The Player\"")]
     [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] List<Color> _playerColors = new List<Color>(4);
     [Tooltip("The players spawn positions")]
     [SerializeField] private List<Transform> _spawnPositions;
     [Tooltip("The prefab you want to use as \"The UI\" ")]
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
             _UIPositions[_players.Count-1].transform).GetComponent<PlayerUI>());
 
         //Assign a color to the player
-        _players[_players.Count - 1].GetComponent<PlayerGameLogic>().AssignColor(Random.ColorHSV());
+        _players[_players.Count - 1].GetComponent<PlayerGameLogic>().AssignColor(_playerColors[_players.Count - 1]);
 
         //Disables player joining after 4 players join
         if (_players.Count >= 4)
